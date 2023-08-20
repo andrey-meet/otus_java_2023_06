@@ -24,3 +24,4 @@ pluginManagement {
 
 include("hw01-gradle")
 include("hw04-generics")
+include("hw06-annotations")
