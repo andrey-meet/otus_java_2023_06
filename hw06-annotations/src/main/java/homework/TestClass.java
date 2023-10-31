@@ -3,6 +3,7 @@ package homework;
 import homework.framework.After;
 import homework.framework.Before;
 import homework.framework.Test;
+import lombok.SneakyThrows;
 
 public class TestClass {
 
@@ -18,7 +19,7 @@ public class TestClass {
   }
 
   @Before
-  public void secondBeforeMethod2(){
+  public void secondBeforeMethod(){
     System.out.println("Second before method started");
     c = 0;
   }
@@ -34,8 +35,9 @@ public class TestClass {
     System.out.println("First test method result: " + sum);
   }
 
+  @SneakyThrows
   @Test(description = "simple test")
-  public void methodWithException() throws ArithmeticException{
+  public void methodWithException() {
     int sum = b/c;
     System.out.println("Second test method result: " + sum);
   }
