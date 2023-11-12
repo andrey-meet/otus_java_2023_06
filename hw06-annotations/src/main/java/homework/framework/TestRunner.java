@@ -1,6 +1,8 @@
 package homework.framework;
 
 import homework.framework.exceptions.TestInvokeException;
+import homework.framework.util.Annotations;
+import homework.framework.util.TestHelper;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -15,7 +17,7 @@ public class TestRunner {
     List<Method> classMethods = List.of(testClass.getMethods());
     Map<Annotations, List<Method>> annotatedMethodsMap = getAnnotatedMethods(classMethods);
     try {
-      testsWithException = startTests(testClass, annotatedMethodsMap, testsWithException);
+      testsWithException = startTests(testClass, annotatedMethodsMap);
     } catch (NoSuchMethodException |
              InvocationTargetException |
              InstantiationException |
@@ -39,21 +41,21 @@ public class TestRunner {
   }
 
   private static int startTests(Class<?> testClass,
-                                Map<Annotations, List<Method>> annotationsEnumListMap,
-                                int testsWithException)
+                                Map<Annotations, List<Method>> annotationsEnumListMap)
       throws NoSuchMethodException, InvocationTargetException, InstantiationException,
       IllegalAccessException {
+    int exceptions = 0;
     for (Method testMethod : annotationsEnumListMap.get(Annotations.TEST)) {
       Object newInstance = testClass.getConstructor().newInstance();
       TestHelper.invokeSupportingMethods(annotationsEnumListMap.get(Annotations.BEFORE), newInstance);
       try {
         TestHelper.invokeMethod(testMethod, newInstance);
       } catch (TestInvokeException e) {
-        testsWithException++;
+        exceptions++;
       }
       TestHelper.invokeSupportingMethods(annotationsEnumListMap.get(Annotations.AFTER), newInstance);
     }
-    return testsWithException;
+    return exceptions;
   }
 
   private static Map<Annotations, List<Method>> getAnnotatedMethods(List<Method> classMethods) {

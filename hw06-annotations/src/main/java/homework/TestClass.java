@@ -1,8 +1,8 @@
 package homework;
 
-import homework.framework.After;
-import homework.framework.Before;
-import homework.framework.Test;
+import homework.framework.annotations.After;
+import homework.framework.annotations.Before;
+import homework.framework.annotations.Test;
 import lombok.SneakyThrows;
 
 public class TestClass {
